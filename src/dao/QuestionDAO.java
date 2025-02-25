@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDAO {
-    public List<Question> getQuestions() throws IOException{
+    public List<Question> getQuestionsFromFile() throws IOException {
         File file = new File("src/resources/forms.txt");
         List<Question> questions = new ArrayList<>();
 
