@@ -11,11 +11,9 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private QuestionService questionService;
 
-    public UserController(UserService userService, QuestionService questionService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.questionService = questionService;
     }
 
     public void registerUser(List<String> userInputs) throws IOException, IllegalArgumentException {
@@ -27,6 +25,10 @@ public class UserController {
 
         User user = userService.createUser(name, email, age, height);
         userService.saveUser(user);
+    }
+
+    public List<User> getUsers() throws IOException {
+        return userService.getAllUsers();
     }
 
     public Integer validateAgeFormat(String ageStr) throws NumberFormatException {

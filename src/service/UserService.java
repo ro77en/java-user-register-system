@@ -4,6 +4,7 @@ import dao.UserDAO;
 import model.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserService {
 
@@ -27,5 +28,9 @@ public class UserService {
         }
 
         return new User(name, email, age, height);
+    }
+
+    public List<User> getAllUsers() throws IOException {
+        return userDAO.getAllUsersFromFile();
     }
 }
