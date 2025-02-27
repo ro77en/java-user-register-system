@@ -1,6 +1,5 @@
 package view;
 
-import controller.QuestionController;
 import controller.UserController;
 import model.Question;
 import model.User;
@@ -43,5 +42,14 @@ public class UserView {
             System.out.printf("%d - %s%n", i, user.getName());
             i++;
         }
+    }
+
+    public void showUsersByName() throws IOException {
+        List<User> foundUsers = userController.searchUsersByName();
+
+        for (User user : foundUsers) {
+            System.out.println(user);
+        }
+
     }
 }

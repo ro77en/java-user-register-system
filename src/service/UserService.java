@@ -4,6 +4,7 @@ import dao.UserDAO;
 import model.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
@@ -32,5 +33,22 @@ public class UserService {
 
     public List<User> getAllUsers() throws IOException {
         return userDAO.getAllUsersFromFile();
+    }
+
+    public List<User> getUsersByName(String name) throws IOException {
+        String[] parts = name.trim().split("\\s");
+
+        List<User> allUsers = getAllUsers();
+        List<User> foundUsers = new ArrayList<>();
+
+        for (String part : parts) {
+            for (User user : allUsers) {
+                if (user.getName().contains(part)) {
+                    foundUsers.add(user);
+                }
+            }
+        }
+
+        return foundUsers;
     }
 }

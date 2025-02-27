@@ -47,4 +47,9 @@ public class User {
     public void setHeight(Float height) {
         this.height = height;
     }
+
+    @Override
+    public String toString() {
+        return getName() + ", " + getEmail();
+    }
 }

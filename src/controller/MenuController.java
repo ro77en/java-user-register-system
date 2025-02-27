@@ -60,6 +60,10 @@ public class MenuController {
                     questionView.deleteQuestion();
                     break;
                 }
+
+                case 5: {
+                    userView.showUsersByName();
+                }
             }
 
         } catch (IOException e) {

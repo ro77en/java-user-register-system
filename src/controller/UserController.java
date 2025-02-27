@@ -1,12 +1,12 @@
 package controller;
 
-import model.Question;
 import model.User;
-import service.QuestionService;
 import service.UserService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class UserController {
 
@@ -29,6 +29,24 @@ public class UserController {
 
     public List<User> getUsers() throws IOException {
         return userService.getAllUsers();
+    }
+
+    public List<User> searchUsersByName() throws IOException {
+        try (Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter a name to search: ");
+            String name = sc.nextLine();
+
+            if (name == null) {
+                throw new IllegalArgumentException("Please enter a valid name");
+            }
+
+            List<User> foundUsers = userService.getUsersByName(name);
+            if (foundUsers.isEmpty()) {
+                throw new NoSuchElementException("No users found");
+            }
+
+            return foundUsers;
+        }
     }
 
     public Integer validateAgeFormat(String ageStr) throws NumberFormatException {

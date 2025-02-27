@@ -21,7 +21,7 @@ public class MenuView {
         System.out.println("2 - List all registered Users");
         System.out.println("3 - Add new Question to the form");
         System.out.println("4 - Delete form Question");
-        System.out.println("5 - Search User by name, age or e-mail");
+        System.out.println("5 - Search User by name");
         System.out.println("=================== USER SYSTEM ===================\n");
 
         menuController.processMenuInput();
