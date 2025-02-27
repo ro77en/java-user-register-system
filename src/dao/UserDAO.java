@@ -1,5 +1,8 @@
 package dao;
 
+import exceptions.InvalidUserFormatException;
+import exceptions.UserFileNotFoundException;
+import exceptions.UserFileReadException;
 import model.User;
 
 import java.io.*;
@@ -37,10 +40,14 @@ public class UserDAO {
         }
     }
 
-    public List<User> getAllUsersFromFile() throws IOException {
+    public List<User> getAllUsersFromFile() throws UserFileNotFoundException {
         List<User> users = new ArrayList<>();
 
         Path folderPath = Paths.get(USERS_FOLDER_PATH);
+
+        if (!Files.exists(folderPath)) {
+            throw new UserFileNotFoundException("Users files folder not found: " + USERS_FOLDER_PATH);
+        }
 
         try (Stream<Path> paths = Files.list(folderPath)) {
             paths.filter(Files::isRegularFile)
@@ -51,25 +58,48 @@ public class UserDAO {
                             User user = readUserFromFile(file);
                             users.add(user);
                         } catch (IOException e) {
-                            throw new UncheckedIOException(e);
+                            throw new UncheckedIOException(new UserFileNotFoundException("Error reading file: " + file.getFileName()));
                         }
                     });
+        } catch (IOException e) {
+            throw new UserFileNotFoundException("Error accessing users files folder");
         }
         return users;
     }
 
-    public User readUserFromFile(Path file) throws IOException {
-        List<String> lines = Files.readAllLines(file);
+    public User readUserFromFile(Path file) throws UserFileReadException, InvalidUserFormatException {
 
         try {
+            List<String> lines = Files.readAllLines(file);
+
+            if (lines.size() < 4) {
+                throw new InvalidUserFormatException("Incomplete user file: " + file.getFileName());
+            }
+
             String name = lines.get(0);
             String email = lines.get(1);
-            int age = Integer.parseInt(lines.get(2));
-            float height = Float.parseFloat(lines.get(3));
+            int age = parseInt(lines.get(2));
+            float height = parseFloat(lines.get(3));
 
             return new User(name, email, age, height);
+        } catch (IOException e) {
+            throw new UserFileReadException("Invalid number format in file: " + file.getFileName());
+        }
+    }
+
+    public Integer parseInt(String value) throws InvalidUserFormatException {
+        try {
+            return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            throw new IOException("Invalid number format in file: " + file.getFileName(), e);
+            throw new InvalidUserFormatException("Invalid age format: " + e.getMessage());
+        }
+    }
+
+    public Float parseFloat(String value) throws InvalidUserFormatException {
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            throw new InvalidUserFormatException("Invalid height format: " + e.getMessage());
         }
     }
 }

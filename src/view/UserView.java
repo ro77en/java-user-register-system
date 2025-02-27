@@ -1,6 +1,9 @@
 package view;
 
 import controller.UserController;
+import exceptions.InvalidUserFormatException;
+import exceptions.UserFileNotFoundException;
+import exceptions.UserSaveException;
 import model.Question;
 import model.User;
 
@@ -20,7 +23,7 @@ public class UserView {
         this.questions = questions;
     }
 
-    public void getNewUserInputs() throws IOException, IllegalArgumentException {
+    public void getNewUserInputs() throws InvalidUserFormatException, UserSaveException, UserFileNotFoundException {
         List<String> userInputs = new ArrayList<>();
         Scanner sc = new Scanner(System.in).useLocale(Locale.US);
 
@@ -35,13 +38,19 @@ public class UserView {
         sc.close();
     }
 
-    public void showAllUsers() throws IOException {
-        List<User> userList = userController.getUsers();
-        int i = 1;
-        for (User user : userList) {
-            System.out.printf("%d - %s%n", i, user.getName());
-            i++;
-        }
+    public void showAllUsers() throws UserFileNotFoundException {
+         try {
+             List<User> userList = userController.getUsers();
+             int i = 1;
+             for (User user : userList) {
+                 System.out.printf("%d - %s%n", i, user.getName());
+                 i++;
+             }
+
+         } catch (IOException e) {
+             throw new UserFileNotFoundException(e.getMessage());
+         }
+
     }
 
     public void showUsersByName() throws IOException {

@@ -2,6 +2,7 @@ package view;
 
 
 import controller.MenuController;
+import exceptions.UserSaveException;
 
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ public class MenuView {
         this.menuController = menuController;
     }
 
-    public void showMenu() throws IOException {
+    public void showMenu() throws UserSaveException {
         System.out.println("=================== USER SYSTEM ===================");
         System.out.println("Enter the desired option: ");
         System.out.println("0 - Exit System");

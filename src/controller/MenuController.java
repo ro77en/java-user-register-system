@@ -1,6 +1,8 @@
 package controller;
 
 
+import exceptions.InvalidUserFormatException;
+import exceptions.UserSaveException;
 import view.QuestionView;
 import view.UserView;
 
@@ -20,7 +22,7 @@ public class MenuController {
         this.questionView = questionView;
     }
 
-    public void processMenuInput() throws InputMismatchException, IOException {
+    public void processMenuInput() throws InputMismatchException, UserSaveException {
 
         try (Scanner sc = new Scanner(System.in).useLocale(Locale.US)) {
             System.out.print("Enter menu option: ");
@@ -33,7 +35,7 @@ public class MenuController {
         }
     }
 
-    public void handleMenuInput(Integer option) throws IOException, InputMismatchException {
+    public void handleMenuInput(Integer option) throws UserSaveException {
         try {
             switch (option) {
                 case 0: {
@@ -67,7 +69,9 @@ public class MenuController {
             }
 
         } catch (IOException e) {
-            throw new IOException(e.getMessage());
+            throw new UserSaveException(e.getMessage());
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException(e.getMessage());
         }
 
 

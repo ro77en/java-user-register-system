@@ -1,6 +1,7 @@
 package service;
 
 import dao.QuestionDAO;
+import exceptions.QuestionsFileNotFoundException;
 import model.Question;
 
 import java.io.IOException;
@@ -8,22 +9,26 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class QuestionService {
-    private QuestionDAO questionDAO;
+    private final QuestionDAO questionDAO;
 
     public QuestionService(QuestionDAO questionDAO) {
         this.questionDAO = questionDAO;
     }
 
-    public List<Question> getQuestions() throws IOException {
-        return questionDAO.getQuestionsFromFile();
+    public List<Question> getQuestions() throws QuestionsFileNotFoundException {
+        try {
+            return questionDAO.getQuestionsFromFile();
+        } catch (QuestionsFileNotFoundException e) {
+            throw new QuestionsFileNotFoundException(e.getMessage());
+        }
     }
 
-    public void addNewQuestion(Integer id, String text) throws IOException {
+    public void addNewQuestion(Integer id, String text) throws QuestionsFileNotFoundException {
         Question newQuestion = new Question(id, text);
         questionDAO.addQuestionToFile(newQuestion);
     }
 
-    public void deleteQuestion(Integer questionId) throws IOException {
+    public void deleteQuestion(Integer questionId) throws QuestionsFileNotFoundException {
         if (questionId <= 4) {
             throw new IllegalArgumentException("You can not delete question 4 and/or before");
         }

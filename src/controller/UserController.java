@@ -1,5 +1,8 @@
 package controller;
 
+import exceptions.InvalidUserFormatException;
+import exceptions.UserFileNotFoundException;
+import exceptions.UserSaveException;
 import model.User;
 import service.UserService;
 
@@ -16,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    public void registerUser(List<String> userInputs) throws IOException, IllegalArgumentException {
+    public void registerUser(List<String> userInputs) throws InvalidUserFormatException, UserSaveException, UserFileNotFoundException {
 
         String name = userInputs.get(0);
         String email = userInputs.get(1);
@@ -31,7 +34,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    public List<User> searchUsersByName() throws IOException {
+    public List<User> searchUsersByName() throws UserFileNotFoundException {
         try (Scanner sc = new Scanner(System.in)){
             System.out.println("Enter a name to search: ");
             String name = sc.nextLine();
@@ -41,8 +44,9 @@ public class UserController {
             }
 
             List<User> foundUsers = userService.getUsersByName(name);
+
             if (foundUsers.isEmpty()) {
-                throw new NoSuchElementException("No users found");
+                throw new UserFileNotFoundException("No users found");
             }
 
             return foundUsers;

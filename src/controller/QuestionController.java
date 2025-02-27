@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.QuestionsFileNotFoundException;
 import model.Question;
 import service.QuestionService;
 
@@ -17,8 +18,12 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    public List<Question> getQuestionsFromService() throws IOException {
-        return questionService.getQuestions();
+    public List<Question> getQuestionsFromService() throws QuestionsFileNotFoundException {
+        try {
+            return questionService.getQuestions();
+        } catch (QuestionsFileNotFoundException e) {
+            throw new QuestionsFileNotFoundException(e.getMessage());
+        }
     }
 
     public void addQuestion(Integer questionsListSize) throws IOException {

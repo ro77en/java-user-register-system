@@ -3,6 +3,8 @@ import controller.QuestionController;
 import controller.UserController;
 import dao.QuestionDAO;
 import dao.UserDAO;
+import exceptions.QuestionsFileNotFoundException;
+import exceptions.UserSaveException;
 import model.Question;
 import service.QuestionService;
 import service.UserService;
@@ -10,7 +12,6 @@ import view.MenuView;
 import view.QuestionView;
 import view.UserView;
 
-import java.io.IOException;
 import java.util.List;
 
 public class Main {
@@ -33,7 +34,7 @@ public class Main {
             MenuView menuView = new MenuView(menuController);
 
             menuView.showMenu();
-        } catch (IOException | RuntimeException e) {
+        } catch (UserSaveException | QuestionsFileNotFoundException | RuntimeException e) {
             System.out.println(e.getMessage());
         }
     }
