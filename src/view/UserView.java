@@ -21,7 +21,7 @@ public class UserView {
         this.questions = questions;
     }
 
-    public void showFormsQuestions() throws IOException, IllegalArgumentException {
+    public void getNewUserInputs() throws IOException, IllegalArgumentException {
         List<String> userInputs = new ArrayList<>();
         Scanner sc = new Scanner(System.in).useLocale(Locale.US);
 
