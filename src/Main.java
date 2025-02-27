@@ -7,6 +7,7 @@ import model.Question;
 import service.QuestionService;
 import service.UserService;
 import view.MenuView;
+import view.QuestionView;
 import view.UserView;
 
 import java.io.IOException;
@@ -22,12 +23,13 @@ public class Main {
         UserService userService = new UserService(userDAO);
         UserController userController = new UserController(userService);
 
-
         try {
             List<Question> questions = questionController.getQuestionsFromService();
-            UserView userView = new UserView(userController, questions);
 
-            MenuController menuController = new MenuController(userView);
+            UserView userView = new UserView(userController, questions);
+            QuestionView questionView = new QuestionView(questionController, questions);
+
+            MenuController menuController = new MenuController(userView, questionView);
             MenuView menuView = new MenuView(menuController);
 
             menuView.showMenu();

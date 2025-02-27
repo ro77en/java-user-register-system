@@ -1,6 +1,7 @@
 package controller;
 
 
+import view.QuestionView;
 import view.UserView;
 
 import java.io.IOException;
@@ -11,10 +12,12 @@ import java.util.Scanner;
 public class MenuController {
 
     private UserView userView;
+    private QuestionView questionView;
 
 
-    public MenuController(UserView userView) {
+    public MenuController(UserView userView, QuestionView questionView) {
         this.userView = userView;
+        this.questionView = questionView;
     }
 
     public void processMenuInput() throws InputMismatchException, IOException {
@@ -30,7 +33,7 @@ public class MenuController {
         }
     }
 
-    public void handleMenuInput(Integer option) throws IOException {
+    public void handleMenuInput(Integer option) throws IOException, InputMismatchException {
         try {
             switch (option) {
                 case 0: {
@@ -39,16 +42,23 @@ public class MenuController {
                 }
 
                 case 1: {
-                    userView.showFormsQuestions();
+                    userView.getNewUserInputs();
                     break;
                 }
 
                 case 2: {
                     userView.showAllUsers();
+                    break;
                 }
 
                 case 3: {
+                    questionView.addQuestion();
+                    break;
+                }
 
+                case 4: {
+                    questionView.deleteQuestion();
+                    break;
                 }
             }
 
